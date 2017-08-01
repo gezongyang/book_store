@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.AuthorityResourceMapper">
+
+<select id="selectResourceByRole" resultType="com.atguigu.bookstore.beans.Resource">
+   select `res_id` resId,`res_path` resPath,`res_code` resCode,`res_pos` resPos,`public_res` publicRes
+   from `bs_resource` br
+   inner join (select `resource_id` from `bs_authority_resource` bar inner join 
+   (select `authority_id` from `bs_user_authority` where role =#{role}) bas  
+   on bar.`authority_id` = bas.authority_id) bs
+   on br.res_id = bs.resource_id
+</select>
+</mapper>

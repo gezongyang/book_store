@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.UserFeedBackMapper">
+   
+   <insert id="saveFeedBackContent">
+      insert into user_callback (callback_user_name,callback_time,callback_content) values(#{username},now(),#{content})
+   </insert>
+   
+   <select id="selectFeedbackOfCurrentUser" resultType="map">
+     select callback_content AS content, callback_time as callbackTime 
+      from user_login_message
+      where callback_user_name=#{username} 
+   </select>
+</mapper>
+    

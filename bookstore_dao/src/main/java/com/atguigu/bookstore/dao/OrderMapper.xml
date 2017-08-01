@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.OrderMapper">
+    
+    
+    <insert id="insertDateToDataBase">
+        insert into bs_order(id,create_date) 
+       values(3,#{createDate}) 
+    </insert>
+    
+    <insert id="saveOrder" parameterType="order">
+       insert into bs_order(id,create_date,total_money,o_status,user_id) 
+       values(#{order.id},#{order.createTime},#{order.totalMoney},#{order.status},#{order.userId})
+    </insert>
+    
+    
+    <select id="getAllOrders" resultType="order">
+        select id,DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%s') AS createTime,total_money totalMoney,o_status status,user_id userId 
+        from bs_order
+    </select>
+    
+    <select id="getMyOrders" resultType="order" parameterType="user">
+        select id,DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%s') AS createTime,total_money totalMoney,o_status status,user_id userId 
+        from bs_order where user_id=#{user.id};
+    </select>
+    
+    <update id="updateStatus" parameterType="order">
+      update bs_order set o_status=#{order.status} where id=#{order.id}
+    </update>
+    
+    <select id="selectOrderByOrderid" resultType="order">
+       select id,DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%s') AS createTime,total_money totalMoney,o_status status,user_id userId 
+       from bs_order
+       where id=#{oid}
+    </select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.ResourceMapper">
+   
+  <select id="selectMaxResCodeOfResPos" resultType="int">
+     select max(`res_code`) from `bs_resource` 
+     where `res_pos` =#{resPos}
+  </select>
+  
+  <select id="checkResExists" resultType="boolean">
+    select count(1) from `bs_resource` where `res_path`=#{servletPath}
+  </select>
+  
+  <select id="selectMaxPos" resultType="java.lang.Integer">
+    select Max(`res_pos`) from `bs_resource`
+  </select>
+  
+  <insert id="insertSource" parameterType="com.atguigu.bookstore.beans.Resource">
+    insert into `bs_resource`(`res_path`,`res_code`,`res_pos`,`public_res`) 
+    values(#{resPath},#{resCode},#{resPos},#{publicRes});
+  </insert>
+  
+  <select id="selectResourceByServletPath" resultType="com.atguigu.bookstore.beans.Resource">
+    select `res_id` resId,`res_path` resPath,`res_code` resCode,`res_pos` resPos,`public_res` publicRes 
+    from `bs_resource` 
+    where `res_path`=#{servletPath}
+  </select>
+</mapper>
+    

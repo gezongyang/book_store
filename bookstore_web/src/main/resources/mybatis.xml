@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!--配置类型的别名 -->
+	<typeAliases>
+		<typeAlias type="com.atguigu.bookstore.beans.Book" alias="book"/>
+		<typeAlias type="com.atguigu.bookstore.beans.User" alias="user"/>
+		<typeAlias type="com.atguigu.bookstore.beans.Order" alias="order"/>
+		<typeAlias type="com.atguigu.bookstore.beans.OrderItem" alias="orderItem"/>
+	</typeAliases>
+</configuration> 

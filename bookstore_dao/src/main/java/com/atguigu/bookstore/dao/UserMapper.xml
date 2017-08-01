@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.UserMapper">
+
+<select id="getUser"  resultType="user">
+    select id,username,password,email,role,code_array codeArray from users where username=#{user.username} and password =#{user.password}
+</select>
+
+<select id="checkUsername"  resultType="boolean">
+   select count(1) from users where username =#{user.username}
+</select>
+
+<select id="saveUser" parameterType="com.atguigu.bookstore.beans.User">
+   insert into users(username,password,email,role,code_array) values(#{username},#{password},#{email},#{role},#{codeArray})
+</select>
+
+<select id="getUserByUserName" resultType="user">
+   select id,username,password,email,role,code_array codeArray from users where username=#{user.username}
+</select>
+
+<select id="isExist" resultType="boolean">
+  select count(1) from users where username=#{userName} and password=#{password}
+</select>
+
+<select id="selectUserByUserNameAndPassword" resultType="user">
+  select id,username,password,email,role,code_array codeArray from users where username=#{userName} and password=#{password}
+</select>
+
+<select id="saveCurrentUser">
+   INSERT INTO ${tableName} (`login_user_name`,`login_date`) VALUES(#{loginUserName},NOW())
+</select>
+</mapper>

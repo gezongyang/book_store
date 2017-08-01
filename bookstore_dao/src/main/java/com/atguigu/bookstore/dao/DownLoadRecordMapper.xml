@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.DownLoadRecordMapper">
+
+<insert id="insertDownLoadRecord" parameterType="com.atguigu.bookstore.beans.DownloadRecord" >
+  INSERT INTO `download_record` (`id`,`file_name`,`file_path`,`download_length`,`ip_address`,`net_port`,`user_agent`,`start_time`,`end_time`,`status`) 
+  VALUES(#{uid},#{fileName},#{filePath},#{length},#{ip},#{port},#{ua},#{startTime},#{endTime},#{status})
+</insert>
+
+<select id="selectDownLoadRecordOfFailByParams" resultType="com.atguigu.bookstore.beans.DownloadRecord">
+  SELECT * FROM download_record WHERE file_name=#{fileName}
+  and status=0
+</select>
+</mapper>

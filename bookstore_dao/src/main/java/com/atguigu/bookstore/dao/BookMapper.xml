@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.atguigu.bookstore.dao.BookMapper">
+
+
+<insert id="saveBook" parameterType="book">
+   insert into books (title,author,price,sales,stock,img_path) 
+   values(#{book.title},#{book.author},#{book.price},#{book.sales},#{book.stock},#{book.imgPath})
+</insert>
+
+<delete id="deleteBook" parameterType="string">
+   delete from books where id =#{bookId}
+</delete>
+
+<update id="updateBook" parameterType="book">
+  update books set title =#{book.title}, author =#{book.author} , price =#{book.price} , sales =#{book.sales} ,stock =#{book.stock},img_path =#{book.imgPath} 
+  where id =#{book.id}
+</update>
+
+<select id="getBookById" parameterType="string" resultType="book">
+   select id , title , author , price , sales , stock , img_path imgPath 
+   from books 
+   where id =#{bookId}
+</select>
+
+<select id="getBookList" resultType="book">
+   select id , title , author , price , sales , stock , img_path imgPath from books
+</select>
+
+<select id="updateSalesAndStock" parameterType="book">
+    update books set sales=#{book.sales},stock=#{book.stock} 
+    where id=#{book.id}
+</select>
+
+<select id="selectTotalCountByPrice" resultType="int">
+   select count(1) from books where price between #{min} and #{max}
+</select>
+
+<select id="getPageBookByPrice" resultType="book">
+    select id , title , author , price , sales , stock , img_path imgPath 
+    from books 
+    where price between #{min} and #{max} 
+    limit #{pageNo} , #{pageSize}
+</select>
+
+<select id="selectBookTotalCount" resultType="int">
+  select count(1) from books
+</select>
+
+<select id="selectBookList" resultType="book">
+    select id , title , author , price , sales , stock , img_path imgPath 
+    from books
+    limit #{pageNo},#{pageSize}
+</select>
+
+<!--批量插入 -->
+<insert id="batchInsertBooks" parameterType="list">
+  	Insert into books (`title`,`author`,`price`,`sales`,`stock`) values  
+	<foreach collection="list" item="item" index="index" separator=",">  
+		(#{item.title},#{item.author},#{item.price},#{item.sales},#{item.stock})  
+	</foreach>  
+</insert>
+</mapper>

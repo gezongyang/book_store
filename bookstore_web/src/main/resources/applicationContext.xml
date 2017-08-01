@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    
+   
+   <!--导入资源  --> 
+  <!--  <import resource="spring-config/*.xml"/> -->
+   
+   <context:component-scan base-package="com.atguigu.bookstore">
+      <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+   </context:component-scan>
+   
+   <!--设置数据源  -->
+   <bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/bookstore?useUnicode=true&amp;characterEncoding=utf8"/>
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>   
+   
+   <!-- 配置sqlSessionFactory -->
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis.xml"/>
+		<property name="mapperLocations" value="classpath:com/atguigu/bookstore/**/*Mapper.xml" />
+	</bean>
+	
+   <!--配置mybatis的配置映射  -->
+   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.atguigu.bookstore.dao"/>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+   </bean>
+   
+   <bean id="multipartResolver"    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1000000" />
+   </bean>
+   
+   <!-- spring 的监听器   监听sping ioc容器的创建   -->
+   <bean id="LogListener" class="com.atguigu.bookstore.listener.LogListener"/>
+   
+   <!--注册任务定时器-->
+   <task:annotation-driven/>
+   
+</beans>
