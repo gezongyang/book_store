@@ -14,11 +14,24 @@
 <c:if test="${not empty sessionScope.loginUser.role }">
 <div>
 		<span>欢迎<span class="um_span">${sessionScope.loginUser.username }</span>光临书城</span> 	
-		<a href="pages/cart/cart.jsp">我的购物车</a>
-		<a href="guest/orders.do">我的订单</a>
-		<a href="guest/getPageBook.do">图书管理</a>
-		<a href="logout.do">注销</a>&nbsp;&nbsp;
-		<a href="index.jsp">返回</a>
+		<!--创建导航条-->
+		<ul class="nav">
+			<li>
+				<a href="pages/cart/cart.jsp">我的购物车</a>
+			</li>
+			<li>
+				<a href="guest/orders.do">我的订单</a>
+			</li>
+			<li>
+				<a href="guest/getPageBook.do">图书管理</a>
+			</li>
+			<li>
+				<a href="logout.do">注销</a>
+			</li>
+			<li>
+				<a href="index.jsp">返回</a>
+			</li>
+		</ul>		
 </div>
 
 </c:if>

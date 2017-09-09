@@ -29,4 +29,12 @@
 <select id="saveCurrentUser">
    INSERT INTO ${tableName} (`login_user_name`,`login_date`) VALUES(#{loginUserName},NOW())
 </select>
+
+<select id="hasEmail" resultType="int">
+  select id from users where email = #{email}
+</select>
+
+<select id="getUserById" resultType="user">
+    select id,username,password,email,role,code_array codeArray from users where id=#{id}
+</select>
 </mapper>

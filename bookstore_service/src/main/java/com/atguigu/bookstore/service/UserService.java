@@ -57,5 +57,19 @@ public interface UserService {
 	 * @param username
 	 */
 	public void saveLoginUser(String username, String tableName);
+    
+	/**
+	 * 判断邮件地址是否存在
+	 * @param email
+	 * @return
+	 */
+	public Integer hasEmail(String email);
+    
+	/**
+	 * 查询用户
+	 * @param id
+	 * @return
+	 */
+	public User getUser(Integer id);
 	
 }

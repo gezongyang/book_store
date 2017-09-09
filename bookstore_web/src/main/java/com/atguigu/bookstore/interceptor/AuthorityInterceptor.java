@@ -39,7 +39,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 		String servletPath = request.getServletPath();
 		
         //4.将ServletPath中的多余部分剪掉
-		servletPath = DataprocessUtils.cutUrl(servletPath);
+		//servletPath = DataprocessUtils.cutUrl(servletPath);
 		
         //5.根据ServletPath获取对应的Res对象
 		Resource res = resService.getResourceByServletPath(servletPath);

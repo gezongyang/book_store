@@ -3,24 +3,28 @@ package com.atguigu.bookstore.servlet;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.atguigu.bookstore.beans.LoginUserMap;
 import com.atguigu.bookstore.beans.User;
+import com.atguigu.bookstore.service.IJedisService;
 import com.atguigu.bookstore.service.UserService;
 import com.atguigu.bookstore.utils.DataprocessUtils;
 import com.atguigu.bookstore.utils.Encrypt;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.atguigu.bookstore.vo.UserVo;
 import com.google.code.kaptcha.Constants;
+import com.sdonkey.score.util.ValidateCodeUtil;
 
 /**
  * 处理用户请求的Servlet
@@ -28,9 +32,12 @@ import com.google.code.kaptcha.Constants;
 @Controller
 public class UserServlet {
 
-    
+	private static final Logger logger = LogManager.getLogger(UserServlet.class);
+	
 	@Autowired
 	private UserService iUserService;
+	@Autowired
+	private IJedisService iJedisService;
 	/**
 	 * 用户登陆
 	 * 
@@ -40,14 +47,14 @@ public class UserServlet {
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/login.do",method=RequestMethod.POST)
-	protected void login(HttpServletRequest request,
+	@ResponseBody
+	protected Object login(@RequestBody UserVo userVo,
+			HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// 获取用户输入的用户名和密码
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");	
-		String code =request.getParameter("code");
-		System.out.println("用户输入的验证码========="+code);
-		String confirmPassword = Encrypt.md5(password, userName);
+		
+		String code =userVo.getCode();
+		logger.debug("用户输入的验证码========="+code);
+		String confirmPassword = Encrypt.md5(userVo.getPassword(), userVo.getUsername());
 		HttpSession session = request.getSession();
 		String codes  = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		System.out.println("服务器生成 的验证码======"+codes);
@@ -57,47 +64,36 @@ public class UserServlet {
 			// 验证码验证失败
 			// 将错误消息放到request域中
 			request.setAttribute("message", "验证码错误！");
-			// 转发到注册页面
+			// 转发到登录页面
 			request.getRequestDispatcher("/pages/user/login.jsp").forward(
 								request, response);
-			return ;
+			return null;
 		}
-			try {
-				User user = iUserService.getUserByUserNameAndPassword(userName, confirmPassword);
-				if(user==null){
-					request.setAttribute("errorInfo", "对不起，用户名或密码错误，登录失败");
-				}else{
-					session.setAttribute("loginUser", user);
-					System.out.println("当前登陆用户===================================="+LoginUserMap.getAll());
-					System.out.println("当前登录用户的数量================================****"+User.getTotalCount());
-					//把当前登陆用户的信息存储在当月的表中
-					String tableName = DataprocessUtils.generateTableName(0);
-					iUserService.saveLoginUser(user.getUsername(), tableName);
-					
-					//设置7天免登录:
-					//1创建cookie对象
-					Cookie cookieOfUserName = new Cookie("userName", userName);
-					Cookie cookieOfPassword = new Cookie("password", password);
-					//2.持久化cookie对象
-					cookieOfUserName.setMaxAge(60 * 60 * 7);
-					cookieOfPassword.setMaxAge(60 * 60 * 7);
-					//3.设置有效路径
-					cookieOfUserName.setPath(request.getContextPath()+"/pages/user/login.jsp");
-					//4.把cookie带到前端页面
-					response.addCookie(cookieOfUserName);
-					response.addCookie(cookieOfPassword);
-					
-				}
+		User user = null;
+		try {
+			user = iUserService.getUserByUserNameAndPassword(userVo.getUsername(), confirmPassword);
+			if(user==null){
+				request.setAttribute("errorInfo", "对不起，用户名或密码错误，登录失败");
+			}else{
+				session.setAttribute("loginUser", user);
+				iJedisService.putUserToRedis(user);
+				System.out.println("当前登陆用户===================================="+LoginUserMap.getAll());
+				System.out.println("当前登录用户的数量================================****"+User.getTotalCount());
+				//把当前登陆用户的信息存储在当月的表中
+				String tableName = DataprocessUtils.generateTableName(0);
+				iUserService.saveLoginUser(user.getUsername(), tableName);
+
+			}
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-				//但密码比较失败后，也会抛出异常
-				request.setAttribute("errorInfo", "对不起，用户名或密码错误，登录失败");
+			    System.out.println(e.getMessage());
+				return null;
 			}
+		        return user;
 			
-			response.sendRedirect(request.getContextPath()
-					+ "/pages/user/login_success.jsp");
+//			response.sendRedirect(request.getContextPath()
+//					+ "/pages/user/login_success.jsp");
 		
 	}
     
@@ -202,4 +198,22 @@ public class UserServlet {
 //           }
 //           
 //    }
+	
+	/**
+	 * 用户邮箱验证
+	 * @param email
+	 * @return
+	 */
+	@RequestMapping("/ajaxGetCodeToEmail.do")
+	@ResponseBody
+	public String writrMessageToMail(String email,HttpSession session){
+		Integer id = iUserService.hasEmail(email);
+        if (id != null) {
+            User user = iUserService.getUser(id);
+            ValidateCodeUtil.writeCodeToEmail(email, user.getUsername(), session);
+            session.setAttribute("sid", id);
+            return "1";
+        }
+        return "-1";
+	}
 }

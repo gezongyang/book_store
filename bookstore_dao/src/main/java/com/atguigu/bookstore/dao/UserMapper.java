@@ -60,6 +60,20 @@ public interface UserMapper {
 	 * @param monthlyLoginTime
 	 */
 	public void saveCurrentUser(@Param("loginUserName") String loginUserName, @Param("tableName") String tableName);
+    
+	/**
+	 * 邮箱地址是否存在
+	 * @param email
+	 * @return
+	 */
+	public Integer hasEmail(@Param("email") String email);
+    
+	/**
+	 * 查询用户
+	 * @param id
+	 * @return
+	 */
+	public User getUserById(@Param("id") Integer id);
 	
 	
 }

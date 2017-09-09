@@ -96,5 +96,17 @@ public class UserServiceImpl implements UserService {
 		userMapper.saveCurrentUser(username,tableName); 
 	}
 
+	@Override
+	public Integer hasEmail(String email) {
+         
+		return userMapper.hasEmail(email);
+	}
+
+	@Override
+	public User getUser(Integer id) {
+  
+		return userMapper.getUserById(id);
+	}
+
     
 }

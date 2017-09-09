@@ -10,7 +10,7 @@
 <description>Redis配置</description>
 <context:property-placeholder location="classpath:redis.properties" />
 
-<bean id="jedisPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+    <bean id="jedisPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
         <property name="maxTotal" value="${redis.maxTotal}"/>
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="minIdle" value="${redis.minIdle}"/>

@@ -95,10 +95,7 @@ div{
 	float: left;
 }
 
-#header div a {
-	text-decoration: none;
-	font-size: 20px;
-}
+
 
 #header div{
 	float: right;
@@ -113,7 +110,43 @@ div{
 	width: 50px;
 	text-align: center;
 }
+/*=================================  */
+/*设置导航条*/
+.nav {
+	
+	float: right;
+	margin-top: 22px;
+}
 
+.nav li {
+	float: left;
+	/*设置左右内边距*/
+	padding: 0 10px 5px 10px;
+	/*边框的高度就是 li的高度*/ 
+	border-left: 1px dotted #d6d6d6;
+	/*去除li标签的圆点  */
+	list-style: none;
+}
+
+
+/*设置导航条中a标签的大小*/
+.nav a {
+	color: #666;
+	font: bold 14px Georgia;
+	text-decoration: none;
+}
+	
+/*为a 标签设置移入效果*/
+.nav a:hover {
+	color: #afaeae;
+}
+/*为 a 标签设置点击效果*/
+.nav a:active {
+	
+	color: #212121;
+}
+
+/*=====================================================  */
 
 /*登录页面CSS样式  */
 
@@ -128,7 +161,7 @@ div{
 }
 
 .login_form{
-	height:310px;
+	height:350px;
 	width:406px;
 	float: right;
 	margin-right:50px;
@@ -193,6 +226,9 @@ h1 {
 	width: 360px;
 	height: 40px;
 }
+ 
+
+
 
 #l_content {
 	float: left;
@@ -256,10 +292,21 @@ h1 {
 	font-size: 20px;
 	margin: 10px;
 }
-
+/*设置链接样式  */
 .cart_span a , td a{
-	font-size: 20px;
-	color: blue;
+	color: #666;
+	text-decoration:none;
+	font: bold 15px Georgia;
+}
+/*设置链接移入样式  */
+td a:hover {
+	color: #afaeae;
+}
+
+/*为 a 标签设置点击效果*/
+.nav a:active {
+	
+	color: #212121;
 }
 
 #header div span {
@@ -272,6 +319,3 @@ h1 {
 	margin: 10px;
 }
 
-#header div a {
-	color: blue;
-}

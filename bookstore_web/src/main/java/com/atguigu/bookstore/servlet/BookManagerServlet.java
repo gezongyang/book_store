@@ -17,6 +17,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.atguigu.bookstore.beans.Book;
 import com.atguigu.bookstore.beans.Page;
 import com.atguigu.bookstore.service.BookService;
+import com.atguigu.bookstore.utils.ConfigUtils;
 import com.atguigu.bookstore.utils.FileDownLoadUtils;
+import com.atguigu.bookstore.utils.MultiThreadDownLoad;
 import com.atguigu.bookstore.utils.WebUtils;
 
 /**
@@ -38,7 +41,6 @@ import com.atguigu.bookstore.utils.WebUtils;
 public class BookManagerServlet  {
    
 	 private static final Logger logger = LogManager.getLogger(BookManagerServlet.class);
-	
 	@Autowired
 	private BookService iBookService;
 	
@@ -202,6 +204,19 @@ public class BookManagerServlet  {
             e.printStackTrace();
         }
         return result;
+	}
+	
+	/**
+	 * 大文本多线程分段下载
+	 * @param path
+	 * @return
+	 */
+	@RequestMapping("/maxFileDown.do")
+	@ResponseBody
+	public String bigFiledownLoad(@RequestParam("fileName") String fileName,HttpServletRequest request){
+		MultiThreadDownLoad downLoad = new MultiThreadDownLoad(3,fileName);
+		int flag = downLoad.downloadByMultiThread();
+		return String.valueOf(flag);
 	}
 	
 }

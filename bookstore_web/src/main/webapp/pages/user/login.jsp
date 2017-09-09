@@ -6,29 +6,8 @@
 <meta charset="UTF-8">
 <title>会员登录页面</title>
 <%@ include file="/WEB-INF/include/base.jsp" %>
-<script type="text/javascript">
-	$(function(){	
-		//点击切换验证码
-		$("#yzCode").click(function(){
-			this.src="code.jpg?a="+Math.random();
-		});
-		
-		//获取登录按钮并给它绑定单击响应函数
-		$("#sub_btn").click(function(){
-			//获取用户输入的用户名和密码
-			var userName = $("#username").val();
-			var password = $("#password").val();
-			if(userName == ""){
-				alert("用户名不能为空！");
-				//取消默认行为
-				return false;
-			}
-			if(password == ""){
-				alert("密码不能为空！");
-				return false;
-			}
-		});
-	});
+<script type="text/javascript" src="/bookstoreWeb/js/login.js">
+	
 </script>
 </head>
 <body>
@@ -56,7 +35,7 @@
 								<span class="errorMsg">${empty message?"请输入用户名和密码":message }</span>
 							</div>
 							<div class="form">
-								<form action="login.do" method="post">
+								<!-- <form action="login.do" method="post"> -->
 									<label>用户名称：</label>
 									<input value="${cookie.userName.value }" class="itxt" type="text" placeholder="请输入用户名" autocomplete="off" tabindex="1" name="username" id="username" />
 									<br />
@@ -71,8 +50,11 @@
 									<img id="yzCode" alt="" src="code.jpg" style="float: right; margin-right: 40px;width: 80px;height: 30px;">									
 									<br />
 									<br />
-									<input type="submit" value="登录" id="sub_btn"/>
-								</form>
+									<div >
+										<input id="sub_btn"  type="button" value="登录" onclick="userLogin(this)"/>
+								    </div>
+								<!-- </form> -->
+								    
 							</div>
 							
 						</div>

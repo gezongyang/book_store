@@ -143,5 +143,14 @@ public class StringUtil extends StringUtils {
         return Cg;
     }
 
-
+    /**
+     * 从url中获取文件名
+     * @param url
+     * @return
+     */
+    public static String getFileName(String url){
+		
+		return url.substring(url.lastIndexOf("/"));
+		
+	}
 }

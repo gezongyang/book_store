@@ -24,14 +24,14 @@ public class ConfigUtils {
      //根据properties获取数据
      public static String getString(String key){
      
-           return prop .getProperty(key);
+           return prop.getProperty(key);
      }
      //测试
      public static void main(String[] args) {
          
-          System. out.println(getString( "adPicUrl"));
-          System. out.println(getString( "adVideo"));
-          System. out.println(getString( "adBannerPicUrl"));
+          System.out.println(getString( "adPicUrl"));
+          System.out.println(getString( "adVideo"));
+          System.out.println(getString( "adBannerPicUrl"));
          
      }
 }

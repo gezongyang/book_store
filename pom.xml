@@ -399,10 +399,17 @@
 			<version>1.9.13</version>
 			<scope>provided</scope>
 			</dependency>
+		<!--fastDFS依赖的包 -->
 		<dependency>
 		    <groupId>org.csource</groupId>
 		    <artifactId>fastdfs-client-java</artifactId>
 		    <version>5.0.4</version>
+		</dependency>
+		<!--javaMail的依赖  -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.5.0-b01</version>
 		</dependency>
         </dependencies>
     

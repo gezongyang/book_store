@@ -51,6 +51,8 @@
             <h1>fdfs下载测试</h1>
             <a href="downloadFile.do?filePath=group1/M00/00/00/rBAsgFl_5lWAf9lrAAAFMQXQ8Kk959.txt">图书的模板下载</a>
             
+             <h1>分段下载</h1>
+            <a href="guest/maxFileDown.do?fileName=aa.txt">分段下载</a>
             
 	    </div>
 	    

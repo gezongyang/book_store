@@ -47,6 +47,9 @@
    <!-- spring 的监听器   监听sping ioc容器的创建   -->
    <bean id="LogListener" class="com.atguigu.bookstore.listener.LogListener"/>
    
+   <!-- redis连接池的配置 -->
+   <import resource="redis-config.xml"/>
+   
    <!--注册任务定时器-->
    <task:annotation-driven/>
    
